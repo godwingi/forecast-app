@@ -1,30 +1,36 @@
-var city = document.getElementById("city-input")
-
+var APIKey = 'af8a40d75abaa39687d28cb67aeb7253';
+var city = document.querySelector("input")
 
 $('button').click(function() {
     window.location.replace("searchResults.html")
     $("#city-name").textContent(city)
     console.log(city)
+  
+runSearch();
 })
 
-// var APIKey = 'af8a40d75abaa39687d28cb67aeb7253';
+function runSearch () {
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+
+    fetch (queryURL)
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (data) {
+    console.log(data)
+    console.log(data.coord);
+    console.log(data.name)
+    localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.coord))
+
+//     // getLonAndLat();
+  });
+}
+
+
 // var city = "New York"
 // // var cityInput = HTMLInputElement.value
 
-// var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
 
-// fetch (queryURL)
-//   .then(function (response) {
-//     return response.json();
-//   })
-//   .then(function (data) {
-//     console.log(data)
-//     console.log(data.coord);
-//     console.log(data.name)
-//     localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.coord))
-
-//     // getLonAndLat();
-//   });
 
 
 //  function getLonAndLat() {
