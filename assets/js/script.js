@@ -2,7 +2,7 @@ var APIKey = 'af8a40d75abaa39687d28cb67aeb7253';
 var city = document.querySelector("#city-input")
 var cityNameEl = document.getElementById("city-name")
 var mainDateEl = document.getElementById("main-date")
-var mainIconEl = document.getElementById("main-icon")
+var mainIconImg = document.getElementById("main-icon").src
 var mainTempEl = document.getElementById("main-temp")
 var mainWindEl = document.getElementById("main-wind")
 var mainHumidityEl = document.getElementById("main-humidity")
@@ -32,7 +32,7 @@ function runSearch () {
   var mainWind = data.wind.speed
 
 // mainDateEl = document.getElementById("main-date")
-mainIconEl.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
+mainIconImg.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
 mainTempEl.textContent = 'Temp:' + mainTemp + '°F'
 mainWindEl.textContent = 'Wind:' + mainWind + 'MPH'
 mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
