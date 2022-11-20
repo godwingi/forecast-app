@@ -1,8 +1,10 @@
 var APIKey = 'af8a40d75abaa39687d28cb67aeb7253';
-var city = document.querySelector("input")
+var city = document.querySelector("input").value
 
 $('button').click(function() {
+    localStorage.setItem('city', JSON.stringify(city))
     window.location.replace("searchResults.html")
+    localStorage.getItem(city)
     $("#city-name").textContent(city)
     console.log(city)
   
