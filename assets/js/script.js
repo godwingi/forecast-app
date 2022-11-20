@@ -1,18 +1,21 @@
 var APIKey = 'af8a40d75abaa39687d28cb67aeb7253';
-var city = document.querySelector("input").value
+var city = document.querySelector("#city-input")
+var cityNameEl = document.getElementById("city-name")
+var mainDateEl = document.getElementById("main-date")
+var mainIconEl = document.getElementById("main-icon")
+var mainTempEl = document.getElementById("main-temp")
+var mainWindEl = document.getElementById("main-wind")
+var mainHumidityEl = document.getElementById("main-humidity")
 
-$('button').click(function() {
-    localStorage.setItem('city', JSON.stringify(city))
-    window.location.replace("searchResults.html")
-    localStorage.getItem(city)
-    $("#city-name").textContent(city)
-    console.log(city)
-  
-runSearch();
-})
+// function getCity() {
+// city = 
+// console.log(city)
+
+// }
 
 function runSearch () {
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+    var cityName = city.value
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
 
     fetch (queryURL)
   .then(function (response) {
@@ -20,14 +23,45 @@ function runSearch () {
   })
   .then(function (data) {
     console.log(data)
-    console.log(data.coord);
-    console.log(data.name)
-    localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.coord))
+  var mainIcon = data.weather[0].icon
+  var mainTemp = data.main.temp
+  var mainHumidity = data.main.humidity
+  var findLongitude = data.coord.lon
+  var findLatitude = data.coord.lat
+  var dataCityName = data.name
+  var mainWind = data.wind.speed
 
-//     // getLonAndLat();
+// mainDateEl = document.getElementById("main-date")
+mainIconEl.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
+mainTempEl.textContent = 'Temp:' + mainTemp + '°F'
+mainWindEl.textContent = 'Wind:' + mainWind + 'MPH'
+mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
+    // localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.weather[0].icon), JSON.stringify(data.main.temp))
+    // localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.main.temp))
+    // localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.wind.speed))
+    // localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.main.humidity))
+
+    // getLonAndLat();
   });
 }
 
+
+
+$('button').click(function (event) {
+    event.preventDefault()
+    var cityName = city.value
+    // getCity();
+    console.log(cityName)
+    localStorage.setItem('city', JSON.stringify(cityName))
+    
+    var getCityName = localStorage.getItem('city')
+    cityNameEl.textContent = JSON.parse(getCityName)
+
+runSearch();
+})
+
+
+// searchButton();
 
 // var city = "New York"
 // // var cityInput = HTMLInputElement.value
