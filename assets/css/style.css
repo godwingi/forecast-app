@@ -20,6 +20,33 @@
     margin-left: 10px;
 }
 
+.btn-search:hover{
+    background-color: darkolivegreen;
+    cursor: pointer;
+}
+
+#weather-info-current-day{
+    display: inline-block;
+    position: relative;
+    width: 60%;
+    border: 3px solid black;
+    margin-left: 1%;
+    padding:5px;
+}
+
 .results {
-    height:250px;
+    margin-left: 1%;
+}
+#weather-forecast-box{
+        display: inline-block;
+        position: relative;
+        margin-right: 5%;
+        margin-top: 1%;
+        padding-top: 10px;
+        float: right;
+        width: 10%;
+        height: 250px;
+        background-color: darkolivegreen;
+        color:white;
+    
 }
