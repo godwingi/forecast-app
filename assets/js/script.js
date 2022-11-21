@@ -2,10 +2,13 @@ var APIKey = 'af8a40d75abaa39687d28cb67aeb7253';
 var city = document.querySelector("#city-input")
 var cityNameEl = document.getElementById("city-name")
 var mainDateEl = document.getElementById("main-date")
-var mainIconImg = document.getElementById("main-icon").src
+var mainIconImg = document.getElementById("main-icon")
 var mainTempEl = document.getElementById("main-temp")
 var mainWindEl = document.getElementById("main-wind")
 var mainHumidityEl = document.getElementById("main-humidity")
+var ulEl = document.getElementById("append-cities")
+var createButton = document.createElement("button")
+
 
 // function getCity() {
 // city = 
@@ -23,6 +26,10 @@ function runSearch () {
   })
   .then(function (data) {
     console.log(data)
+    var mainDateinUnix = data.dt
+    var mainDate = dayjs.unix(mainDateinUnix).format('MMM D, YYYY');
+
+
   var mainIcon = data.weather[0].icon
   var mainTemp = data.main.temp
   var mainHumidity = data.main.humidity
@@ -31,7 +38,7 @@ function runSearch () {
   var dataCityName = data.name
   var mainWind = data.wind.speed
 
-// mainDateEl = document.getElementById("main-date")
+mainDateEl.textContent = mainDate
 mainIconImg.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
 mainTempEl.textContent = 'Temp:' + mainTemp + '°F'
 mainWindEl.textContent = 'Wind:' + mainWind + 'MPH'
