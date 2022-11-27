@@ -49,7 +49,7 @@ var day5tempEl = document.getElementById("temp1")
 var day5windEl = document.getElementById("wind1")
 var day5humidityEl = document.getElementById("humidity1")
 
-function runSearch () {
+function runSearch (data) {
     var cityName = city.value
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
 
@@ -76,11 +76,7 @@ mainIconImg.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
 mainTempEl.textContent = 'Temp:' + mainTemp + '°F'
 mainWindEl.textContent = 'Wind:' + mainWind + 'MPH'
 mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
-    // localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.weather[0].icon), JSON.stringify(data.main.temp))
-    // localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.main.temp))
-    // localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.wind.speed))
-    // localStorage.setItem(JSON.stringify(data.name), JSON.stringify(data.main.humidity))
-
+    
   var urlInfo = []; 
   urlInfo.push(findLongitude)
   urlInfo.push(findLatitude)
@@ -92,7 +88,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
 }  
   )}
 
-
   function get5DayForecast (urlInfo) {
     var requestForecastUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + urlInfo[1]+"&lon=" + urlInfo[0] + "&appid=" + APIKey
 
@@ -103,9 +98,14 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
   .then(function (data) {
     console.log(data)
 
+    getday1to5Arrays(data)
+  })
+  }
+
+  function getday1to5Arrays (data) {
+    // Day 1
     var day1Date = data.list[1].dt
       var day1DateConverted = dayjs.unix(day1Date).format('MMM D, YYYY');
-      console.log(day1DateConverted)
     var day1Icon = data.list[1].weather[0].icon
     var day1Temp = data.list[1].main.temp
     var day1Wind = data.list[1].wind.speed
@@ -117,15 +117,7 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     day1Info.push(day1Temp)
     day1Info.push(day1Wind)
     day1Info.push(day1Humidity)
-
-    // console.log(day1Info)
-
-    loadDay1(day1Info);
-    getday2to5Arrays(data)
-  })
-  }
-
-  function getday2to5Arrays (data) {
+    
     // Day 2
     var day2Date = data.list[9].dt
       var day2DateConverted = dayjs.unix(day2Date).format('MMM D, YYYY');
@@ -144,7 +136,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     //Day 3
     var day3Date = data.list[17].dt
       var day3DateConverted = dayjs.unix(day3Date).format('MMM D, YYYY');
-      console.log(day3DateConverted)
     var day3Icon = data.list[17].weather[0].icon
     var day3Temp = data.list[17].main.temp
     var day3Wind = data.list[17].wind.speed
@@ -160,7 +151,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     //Day 4
     var day4Date = data.list[25].dt
       var day4DateConverted = dayjs.unix(day4Date).format('MMM D, YYYY');
-      console.log(day4DateConverted)
     var day4Icon = data.list[25].weather[0].icon
     var day4Temp = data.list[25].main.temp
     var day4Wind = data.list[25].wind.speed
@@ -176,7 +166,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     //Day 5
     var day5Date = data.list[33].dt
       var day5DateConverted = dayjs.unix(day5Date).format('MMM D, YYYY');
-      console.log(day5DateConverted)
     var day5Icon = data.list[33].weather[0].icon
     var day5Temp = data.list[33].main.temp
     var day5Wind = data.list[33].wind.speed
@@ -189,15 +178,17 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     day5Info.push(day5Wind)
     day5Info.push(day5Humidity)
     
+    loadDay1(day1Info);
     loadDay2 (day2Info);
     loadDay3 (day3Info);
     loadDay4 (day4Info);
     loadDay5 (day5Info);
+
   }
   
+  // Functions to insert all information into their respective placeholders
   function loadDay5 (day5Info) {
     day5dateEl.textContent = day5Info[0]
-    console.log(day5Info[0])
     day5iconEl.src = 'http://openweathermap.org/img/wn/' + day5Info[1] + '@2x.png'
     day5tempEl.textContent = 'Temp:' + day5Info[2] + '°F'
     day5windEl.textContent = 'Wind:' + day5Info[3] + 'MPH'
@@ -206,7 +197,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
 
   function loadDay4 (day4Info) {
     day4dateEl.textContent = day4Info[0]
-    console.log(day4Info[0])
     day4iconEl.src = 'http://openweathermap.org/img/wn/' + day4Info[1] + '@2x.png'
     day4tempEl.textContent = 'Temp:' + day4Info[2] + '°F'
     day4windEl.textContent = 'Wind:' + day4Info[3] + 'MPH'
@@ -215,7 +205,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
 
   function loadDay3 (day3Info) {
     day3dateEl.textContent = day3Info[0]
-    console.log(day3Info[0])
     day3iconEl.src = 'http://openweathermap.org/img/wn/' + day3Info[1] + '@2x.png'
     day3tempEl.textContent = 'Temp:' + day3Info[2] + '°F'
     day3windEl.textContent = 'Wind:' + day3Info[3] + 'MPH'
@@ -224,7 +213,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
 
   function loadDay2 (day2Info) {
     day2dateEl.textContent = day2Info[0]
-    console.log(day2Info[0])
     day2iconEl.src = 'http://openweathermap.org/img/wn/' + day2Info[1] + '@2x.png'
     day2tempEl.textContent = 'Temp:' + day2Info[2] + '°F'
     day2windEl.textContent = 'Wind:' + day2Info[3] + 'MPH'
@@ -233,7 +221,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
 
   function loadDay1(day1Info) {
     day1dateEl.textContent = day1Info[0]
-    console.log(day1Info[0])
     day1iconEl.src = 'http://openweathermap.org/img/wn/' + day1Info[1] + '@2x.png'
     day1tempEl.textContent = 'Temp:' + day1Info[2] + '°F'
     day1windEl.textContent = 'Wind:' + day1Info[3] + 'MPH'
@@ -255,19 +242,28 @@ runSearch();
 
 function searchHistoryButton (urlInfo) {
 var searchButton = document.createElement("button");
+localStorage.setItem("cities", JSON.stringify(urlInfo[2].value))
 ulEl.append(searchButton) 
 searchButton.textContent = urlInfo[2]
-searchButton = localStorage.setItem("cityinfo", urlInfo[2])
-searchButton.addEventListener(onclick, display())
 
-if (searchButton === true) {
-  alert("Button has been clicked!")
-}
-else {
-  console.log("Click to see previous information")
-}} 
+searchButton.addEventListener(onclick, display(searchButton))
+} 
 
-function display() {
-  var restartSearch = localStorage.getItem("cityinfo")
-  runSearch(restartSearch)
+function display(searchButton) {
+
+  var researchCity = localStorage.getItem = searchButton.textContent
+console.log(researchCity)
 }
+
+function searchAgain() {
+  var searchURL = "http://api.openweathermap.org/data/2.5/weather?q=" + researchCity + "&appid=" + APIKey;
+
+    fetch (searchURL)
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (data) {
+    console.log(data)
+
+  runSearch(data)
+  })}
