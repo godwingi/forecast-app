@@ -87,7 +87,8 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
   urlInfo.push(dataCityName)
   console.log(urlInfo)
 
-    get5DayForecast(urlInfo)
+    get5DayForecast(urlInfo);
+    searchHistoryButton (urlInfo);
 }  
   )}
 
@@ -159,7 +160,7 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     //Day 4
     var day4Date = data.list[25].dt
       var day4DateConverted = dayjs.unix(day4Date).format('MMM D, YYYY');
-      console.log(day1DateConverted)
+      console.log(day4DateConverted)
     var day4Icon = data.list[25].weather[0].icon
     var day4Temp = data.list[25].main.temp
     var day4Wind = data.list[25].wind.speed
@@ -175,7 +176,7 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     //Day 5
     var day5Date = data.list[33].dt
       var day5DateConverted = dayjs.unix(day5Date).format('MMM D, YYYY');
-      console.log(day1DateConverted)
+      console.log(day5DateConverted)
     var day5Icon = data.list[33].weather[0].icon
     var day5Temp = data.list[33].main.temp
     var day5Wind = data.list[33].wind.speed
@@ -193,6 +194,33 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     loadDay4 (day4Info);
     loadDay5 (day5Info);
   }
+  
+  function loadDay5 (day5Info) {
+    day5dateEl.textContent = day5Info[0]
+    console.log(day5Info[0])
+    day5iconEl.src = 'http://openweathermap.org/img/wn/' + day5Info[1] + '@2x.png'
+    day5tempEl.textContent = 'Temp:' + day5Info[2] + '°F'
+    day5windEl.textContent = 'Wind:' + day5Info[3] + 'MPH'
+    day5humidityEl.textContent = 'Humidity:' + day5Info[4] + '%'
+  }
+
+  function loadDay4 (day4Info) {
+    day4dateEl.textContent = day4Info[0]
+    console.log(day4Info[0])
+    day4iconEl.src = 'http://openweathermap.org/img/wn/' + day4Info[1] + '@2x.png'
+    day4tempEl.textContent = 'Temp:' + day4Info[2] + '°F'
+    day4windEl.textContent = 'Wind:' + day4Info[3] + 'MPH'
+    day4humidityEl.textContent = 'Humidity:' + day4Info[4] + '%'
+  }
+
+  function loadDay3 (day3Info) {
+    day3dateEl.textContent = day3Info[0]
+    console.log(day3Info[0])
+    day3iconEl.src = 'http://openweathermap.org/img/wn/' + day3Info[1] + '@2x.png'
+    day3tempEl.textContent = 'Temp:' + day3Info[2] + '°F'
+    day3windEl.textContent = 'Wind:' + day3Info[3] + 'MPH'
+    day3humidityEl.textContent = 'Humidity:' + day3Info[4] + '%'
+  }
 
   function loadDay2 (day2Info) {
     day2dateEl.textContent = day2Info[0]
@@ -202,7 +230,6 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
     day2windEl.textContent = 'Wind:' + day2Info[3] + 'MPH'
     day2humidityEl.textContent = 'Humidity:' + day2Info[4] + '%'
   }
-
 
   function loadDay1(day1Info) {
     day1dateEl.textContent = day1Info[0]
@@ -226,39 +253,21 @@ $('button').click(function (event) {
 runSearch();
 })
 
+function searchHistoryButton (urlInfo) {
+var searchButton = document.createElement("button");
+ulEl.append(searchButton) 
+searchButton.textContent = urlInfo[2]
+searchButton = localStorage.setItem("cityinfo", urlInfo[2])
+searchButton.addEventListener(onclick, display())
 
-// searchButton();
+if (searchButton === true) {
+  alert("Button has been clicked!")
+}
+else {
+  console.log("Click to see previous information")
+}} 
 
-// var city = "New York"
-// // var cityInput = HTMLInputElement.value
-
-
-
-
-//  function getLonAndLat() {
-//     var lon = localStorage.getItem(data.coord)
-//     console.log(lon)
-//  }
-
-
-//   var geoCodeUrl = "http://api.openweathermap.org/geo/1.0/reverse?lat=" + lat + "&lon=" + lon + "&appid="" + APIKey;
-
-//   localStorage.getItem(JSON.parse(city))
-//   console.log(city)
-
-// document.querySelector('.btn').addEventListener(onclick, function(){
-//     var city = document.createElement('li')
-
-//     $('ul').appendChild(cityName)
-// })
-
-// function GetInfo(){
-//     window.location.href = 'searchResults.html'
-
-    // var newName = document.getElementById("cityInput")
-    // var cityName = document.createElement("button")
-    // console.log(newName)
-    // console.log(cityName)
-
-    // $('ul').appendChild(cityName).innerHTML(newName)
-  
+function display() {
+  var restartSearch = localStorage.getItem("cityinfo")
+  runSearch(restartSearch)
+}
