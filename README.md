@@ -20,6 +20,8 @@ Once you click "search", you will then be shown today's weather at the top, and 
 
 If you conduct more searches, your previous searches will be appended to the "Recently Searched" section. When you click on your previous searches, your previous search will reload onto the page. 
 
+![Screenshot](./assets/images/Screenshot%202022-12-01%20at%209.55.22%20PM.png)
+
 ## Credits
 
 Open Weather API
