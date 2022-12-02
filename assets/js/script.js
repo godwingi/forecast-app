@@ -12,7 +12,7 @@ var mainHumidityEl = document.getElementById("main-humidity")
 
 //Search History Elements
 var ulEl = document.getElementById("search-history")
-var createButton = document.createElement("button")
+var searchButton = document.createElement("button");
 
 // 5day Forecast Elements - Day 1
 var day1dateEl = document.getElementById("date5")
@@ -48,9 +48,6 @@ var day5iconEl = document.getElementById("icon1")
 var day5tempEl = document.getElementById("temp1")
 var day5windEl = document.getElementById("wind1")
 var day5humidityEl = document.getElementById("humidity1")
-
-  // Local Storage Variable
-  var cityInfoArray = [];
 
 function runSearch (data) {
     var cityName = city.value
@@ -88,7 +85,7 @@ mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
   // console.log(urlInfo)
 
     get5DayForecast(urlInfo);
-    searchHistoryButton (urlInfo)
+    // searchHistoryButton (urlInfo)
 
 }  
   )}
@@ -239,24 +236,35 @@ $('button').click(function (event) {
     var cityName = city.value
     // getCity();
     // console.log(cityName)
-    localStorage.setItem('city', JSON.stringify(cityName))
-    
-    var getCityName = localStorage.getItem('city')
-    cityNameEl.textContent = JSON.parse(getCityName)
+    var citiesArray = [];
+    citiesArray.push(cityName)
+    localStorage.setItem('cities', JSON.stringify(citiesArray))
+    cityNameEl.textContent = cityName
+
+    JSON.parse(localStorage.getItem('cities'))
+    if (!citiesArray) {
+      citiesArray = []
+    } else {
+      for (i=0; i > citiesArray.length; i++) {
+        ulEl.append(searchButton)
+        searchButton.textContent = citiesArray[i]
+      }
+    }
+
+  
 
 runSearch();
 })
 
-function searchHistoryButton (urlInfo) {
-var searchButton = document.createElement("button");
-ulEl.append(searchButton) 
-searchButton.setAttribute("id", urlInfo[2])
-// cityInfoArray.push(urlInfo[2])
+// function searchHistoryButton (urlInfo) {
+// var searchButton = document.createElement("button");
+// ulEl.append(searchButton) 
+// searchButton.setAttribute("id", urlInfo[2])
+// // cityInfoArray.push(urlInfo[2])
   
-console.log(cityInfoArray + ' --> this is the city info array')
-searchButton.textContent = urlInfo[2]
-cityInfoArray.push(searchButton.textContent)
-localStorage.setItem(JSON.stringify(searchButton.textContent),JSON.stringify(cityInfoArray))
+// console.log(cityInfoArray + ' --> this is the city info array')
+// searchButton.textContent = urlInfo[2]
+// // cityInfoArray.push(searchButton.textContent)
 
 //LOCAL STORAGE
 // cityInfoArray.forEach(array)
@@ -265,31 +273,31 @@ localStorage.setItem(JSON.stringify(searchButton.textContent),JSON.stringify(cit
 //   console.log(item)
 //   }
   
-$(searchButton).click(function(event) {
-    event.preventDefault()
+// $(searchButton).click(function(event) {
+//     event.preventDefault()
 
-    $("button").on('click', function (event) {
-      event.preventDefault;
+//     $("button").on('click', function (event) {
+//       event.preventDefault;
       
-      let newIds = $(this).attr("id");  
-       console.log(newIds)
+//       let newIds = $(this).attr("id");  
+//        console.log(newIds)
   
-       if(searchButton.textContent == newIds){
-var searchURL = "http://api.openweathermap.org/data/2.5/weather?q=" + newIds + "&appid=" + APIKey;
+//        if(searchButton.textContent == newIds){
+// var searchURL = "http://api.openweathermap.org/data/2.5/weather?q=" + newIds + "&appid=" + APIKey;
 
-    fetch (searchURL)
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data)
+//     fetch (searchURL)
+//   .then(function (response) {
+//     return response.json();
+//   })
+//   .then(function (data) {
+//     console.log(data)
 
-  runSearch(data)
+//   runSearch(data)
   
-    })} else {
-      console.log("nope")
-    }}
-)})}
+//     })} else {
+//       console.log("nope")
+//     }}
+// )})}
   // function searchAgain(newIds) {
   // var searchURL = "http://api.openweathermap.org/data/2.5/weather?q=" + newIds + "&appid=" + APIKey;
 
