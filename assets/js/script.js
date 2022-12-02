@@ -50,9 +50,9 @@ var day5windEl = document.getElementById("wind1")
 var day5humidityEl = document.getElementById("humidity1")
 
   // Local Storage Variable
-  let cityInfoArray = [];
+  var cityInfoArray = [];
 
-function runSearch (searchButton) {
+function runSearch (data) {
     var cityName = city.value
   
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
@@ -74,14 +74,6 @@ function runSearch (searchButton) {
   var findLatitude = data.coord.lat
   var dataCityName = data.name
   var mainWind = data.wind.speed
-  
-  cityInfoArray.push(dataCityName)
-  cityInfoArray.push(mainDate)
-  cityInfoArray.push(mainIcon)
-  cityInfoArray.push(mainTemp)
-  cityInfoArray.push(mainWind)
-  cityInfoArray.push(mainHumidity)
-  console.log(cityInfoArray)
 
 mainDateEl.textContent = mainDate
 mainIconImg.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
@@ -246,7 +238,7 @@ $('button').click(function (event) {
     event.preventDefault()
     var cityName = city.value
     // getCity();
-    console.log(cityName)
+    // console.log(cityName)
     localStorage.setItem('city', JSON.stringify(cityName))
     
     var getCityName = localStorage.getItem('city')
@@ -259,27 +251,79 @@ function searchHistoryButton (urlInfo) {
 var searchButton = document.createElement("button");
 ulEl.append(searchButton) 
 searchButton.setAttribute("id", urlInfo[2])
+// cityInfoArray.push(urlInfo[2])
+  
+console.log(cityInfoArray + ' --> this is the city info array')
 searchButton.textContent = urlInfo[2]
+cityInfoArray.push(searchButton.textContent)
 localStorage.setItem(JSON.stringify(searchButton.textContent),JSON.stringify(cityInfoArray))
 
 //LOCAL STORAGE
-cityInfoArray.forEach(array)
+// cityInfoArray.forEach(array)
 
-  function array(item, index, arr) {
-  console.log(item)
-
-  $(searchButton).click(function(event) {
+//   function array(item, index, arr) {
+//   console.log(item)
+//   }
+  
+$(searchButton).click(function(event) {
     event.preventDefault()
-    localStorage.getItem(searchButton.textContent)
+
+    $("button").on('click', function (event) {
+      event.preventDefault;
+      
+      let newIds = $(this).attr("id");  
+       console.log(newIds)
+  
+       if(searchButton.textContent == newIds){
+var searchURL = "http://api.openweathermap.org/data/2.5/weather?q=" + newIds + "&appid=" + APIKey;
+
+    fetch (searchURL)
+  .then(function (response) {
+    return response.json();
   })
+  .then(function (data) {
+    console.log(data)
 
-  }
-}
+  runSearch(data)
+  
+    })} else {
+      console.log("nope")
+    }}
+)})}
+  // function searchAgain(newIds) {
+  // var searchURL = "http://api.openweathermap.org/data/2.5/weather?q=" + newIds + "&appid=" + APIKey;
+
+  //   fetch (searchURL)
+  // .then(function (response) {
+  //   return response.json();
+  // })
+  // .then(function (data) {
+  //   console.log(data)
+
+  // runSearch(data)
+  // })}
+
+//     $("button").click(log($(this).attr("id")));  
+// function log(id) {
+//        var IdIndex = [];
+//        IdIndex.push(id.value)
+//        console.log(IdIndex)
+    
+//     console.log("It works!")
+    // var oldWeather = localStorage.getItem(getKey)
+    // console.log(oldWeather)
+ 
+// if(IdIndex == cityInfoArray[i]) {
+//   for (i=0; i > cityInfoArray.length; i++)
+
+//  var researchCity = JSON.parse(localStorage.getItem(cityInfoArray[i]))
+// console.log(researchCity)
+
+// }})}
+// )}
+  
+
 // }
-
-  console.log(cityInfoArray)
-
-
 // searchButtonClick(searchButton);
 
 
@@ -298,16 +342,3 @@ cityInfoArray.forEach(array)
 // function display(searchButton) {
 
 // }
-
-// function searchAgain() {
-//   var searchURL = "http://api.openweathermap.org/data/2.5/weather?q=" + researchCity + "&appid=" + APIKey;
-
-//     fetch (searchURL)
-//   .then(function (response) {
-//     return response.json();
-//   })
-//   .then(function (data) {
-//     console.log(data)
-
-//   runSearch(data)
-//   })}
