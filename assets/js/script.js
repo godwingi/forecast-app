@@ -238,17 +238,20 @@ $('button').click(function (event) {
     event.preventDefault()
     var cityName = city.value
     cityNameEl.textContent = cityName
-    // getCity();
-    // console.log(cityName)
+    ulEl.textContent = ""
+    var tempcit = JSON.parse(localStorage.getItem("cities"))
+    if(tempcit !== null){
+      cityArray = tempcit
+    } 
+
     cityArray.push(cityName)
     localStorage.setItem('cities', JSON.stringify(cityArray))
     
-    var searchButton = document.createElement("button");
-    ulEl.append(searchButton) 
-    // searchButton.textContent = JSON.parse(localStorage.getItem("cities"))
 
-    for (i=0; i > JSON.parse(localStorage.getItem("cities")).length; i++) {
-      searchButton.textContent = JSON.parse(localStorage.getItem("cities"[i]))
+    for (i=0; i < cityArray.length; i++) {
+      var searchButton = document.createElement("button")
+      searchButton.textContent = cityArray[i]
+      ulEl.append(searchButton) 
     }
 runSearch();
 })
