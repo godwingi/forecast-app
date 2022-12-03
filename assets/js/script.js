@@ -12,7 +12,6 @@ var mainHumidityEl = document.getElementById("main-humidity")
 
 //Search History Elements
 var ulEl = document.getElementById("search-history")
-var createButton = document.createElement("button")
 
 // 5day Forecast Elements - Day 1
 var day1dateEl = document.getElementById("date5")
@@ -239,90 +238,49 @@ $('button').click(function (event) {
     var cityName = city.value
     cityNameEl.textContent = cityName
     ulEl.textContent = ""
-    var tempcit = JSON.parse(localStorage.getItem("cities"))
-    if(tempcit !== null){
-      cityArray = tempcit
-    } 
-
+    var cityButtons = JSON.parse(localStorage.getItem("cities"))
+    
+    if(cityButtons !== null){
+        cityArray = cityButtons  
+      } 
+  
     cityArray.push(cityName)
     localStorage.setItem('cities', JSON.stringify(cityArray))
     
-
+  
     for (i=0; i < cityArray.length; i++) {
       var searchButton = document.createElement("button")
       searchButton.textContent = cityArray[i]
       ulEl.append(searchButton) 
-    }
-runSearch();
+  
+    // getStorage(cityName)
+    runSearch();
+}
+$(searchButton).click(function (event) {
+  console.log(event.target.innerHTML);
 })
-
-// function searchHistoryButton (urlInfo) {
-// var searchButton = document.createElement("button");
-// ulEl.append(searchButton) 
-// searchButton.setAttribute("id", urlInfo[2])
-// // cityInfoArray.push(urlInfo[2])
+})
+// function getStorage(cityName) {
+//   ulEl.textContent = ""
+//   var cityButtons = JSON.parse(localStorage.getItem("cities"))
   
-// console.log(cityArray + ' --> this is the city info array')
-// searchButton.textContent = urlInfo[2]
-// cityInfoArray.push(searchButton.textContent)
+//   if(cityButtons !== null){
+//       cityArray = cityButtons  
+//     } 
 
-//LOCAL STORAGE
-// cityInfoArray.forEach(array)
-
-//   function array(item, index, arr) {
-//   console.log(item)
-//   }
+//   cityArray.push(cityName)
+//   localStorage.setItem('cities', JSON.stringify(cityArray))
   
 
-  // function searchAgain(newIds) {
-  // var searchURL = "http://api.openweathermap.org/data/2.5/weather?q=" + newIds + "&appid=" + APIKey;
+//   for (i=0; i < cityArray.length; i++) {
+//     var searchButton = document.createElement("button")
+//     searchButton.textContent = cityArray[i]
+//     ulEl.append(searchButton) 
 
-  //   fetch (searchURL)
-  // .then(function (response) {
-  //   return response.json();
-  // })
-  // .then(function (data) {
-  //   console.log(data)
+//     cityArray[i].addEventListener("click", function (event) {
+//       console.log(event.target.innerHTML);
+//    });
 
-  // runSearch(data)
-  // })}
+//   }}
 
-//     $("button").click(log($(this).attr("id")));  
-// function log(id) {
-//        var IdIndex = [];
-//        IdIndex.push(id.value)
-//        console.log(IdIndex)
-    
-//     console.log("It works!")
-    // var oldWeather = localStorage.getItem(getKey)
-    // console.log(oldWeather)
- 
-// if(IdIndex == cityInfoArray[i]) {
-//   for (i=0; i > cityInfoArray.length; i++)
-
-//  var researchCity = JSON.parse(localStorage.getItem(cityInfoArray[i]))
-// console.log(researchCity)
-
-// }})}
-// )}
-  
-
-// }
-// searchButtonClick(searchButton);
-
-
-// function searchButtonClick (searchButton) {
-//   $(cityInfoArray).each(function() {
-//     let separateCities = parseInt(
-//        $(this)
-//          .attr('id')
-//          .split('-')[1]
-//     )
-// })}
-
-
-// searchButton.addEventListener(onclick, display(searchButton)) 
-
-// function display(searchButton) {
-
-// }
+//   getStorage()
