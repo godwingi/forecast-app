@@ -76,9 +76,9 @@ function runSearch (data) {
 
 mainDateEl.textContent = mainDate
 mainIconImg.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
-mainTempEl.textContent = 'Temp:' + mainTemp + '°F'
-mainWindEl.textContent = 'Wind:' + mainWind + 'MPH'
-mainHumidityEl.textContent = 'Humidity:' + mainHumidity + '%'
+mainTempEl.textContent = 'Temp: ' + mainTemp + ' °F'
+mainWindEl.textContent = 'Wind: ' + mainWind + ' MPH'
+mainHumidityEl.textContent = 'Humidity: ' + mainHumidity + ' %'
 
   var urlInfo = []; 
   urlInfo.push(findLongitude)
@@ -247,40 +247,58 @@ $('button').click(function (event) {
     cityArray.push(cityName)
     localStorage.setItem('cities', JSON.stringify(cityArray))
     
-  
-    for (i=0; i < cityArray.length; i++) {
-      var searchButton = document.createElement("button")
+ // creates the buttons form localStorage - 
+    for (let i=0; i < cityArray.length; i++) {
+      let searchButton = document.createElement("button")
       searchButton.textContent = cityArray[i]
       ulEl.append(searchButton) 
   
-    // getStorage(cityName)
-    runSearch();
+      runSearch();
+
+      $(searchButton).click(function (event) {
+        var searchClicked = event.target.innerHTML
+        cityNameEl.textContent = searchClicked
+          console.log(searchClicked)
+        var queryURL2 = "http://api.openweathermap.org/data/2.5/weather?q=" + searchClicked + "&appid=" + APIKey;
+
+    fetch (queryURL2)
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (data){ 
+    console.log(data)
+    getInfoAgain(data);
+  })
+      })
 }
-$(searchButton).click(function (event) {
-  console.log(event.target.innerHTML);
 })
-})
-// function getStorage(cityName) {
-//   ulEl.textContent = ""
-//   var cityButtons = JSON.parse(localStorage.getItem("cities"))
-  
-//   if(cityButtons !== null){
-//       cityArray = cityButtons  
-//     } 
 
-//   cityArray.push(cityName)
-//   localStorage.setItem('cities', JSON.stringify(cityArray))
-  
+//searches the Recently Changed Information
+function getInfoAgain (data) {
 
-//   for (i=0; i < cityArray.length; i++) {
-//     var searchButton = document.createElement("button")
-//     searchButton.textContent = cityArray[i]
-//     ulEl.append(searchButton) 
+  var mainDateinUnix = data.dt
+  var mainDate = dayjs.unix(mainDateinUnix).format('MMM D, YYYY');
 
-//     cityArray[i].addEventListener("click", function (event) {
-//       console.log(event.target.innerHTML);
-//    });
 
-//   }}
+  var mainIcon = data.weather[0].icon
+  var mainTemp = data.main.temp
+  var mainHumidity = data.main.humidity
+  var findLongitude = data.coord.lon
+  var findLatitude = data.coord.lat
+  var dataCityName = data.name
+  var mainWind = data.wind.speed
 
-//   getStorage()
+mainDateEl.textContent = mainDate
+mainIconImg.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
+mainTempEl.textContent = 'Temp: ' + mainTemp + ' °F'
+mainWindEl.textContent = 'Wind: ' + mainWind + ' MPH'
+mainHumidityEl.textContent = 'Humidity: ' + mainHumidity + ' %'
+
+var urlInfo = []; 
+urlInfo.push(findLongitude)
+urlInfo.push(findLatitude)
+urlInfo.push(dataCityName)
+// console.log(urlInfo)
+
+  get5DayForecast(urlInfo);
+}
