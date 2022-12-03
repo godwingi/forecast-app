@@ -238,6 +238,12 @@ $('button').click(function (event) {
     var cityName = city.value
     cityNameEl.textContent = cityName //updates intital city placeholder
     
+    runSearch()
+    getStored(cityName)
+  })
+
+// separate function to check local Storage for information to populate recently searched
+  function getStored(cityName) {
     ulEl.textContent = "" //clears recently searched inputs
     var cityButtons = JSON.parse(localStorage.getItem("cities")) //finds items in the Local Storage and populates it, at the moment, only when the "search" button is clicked
     
@@ -254,7 +260,6 @@ $('button').click(function (event) {
       searchButton.textContent = cityArray[i]
       ulEl.append(searchButton) 
   
-      runSearch();
 // When button is clicked, it's innerHTML is created into a variable making it possible to make a call using the city name to the API
       $(searchButton).click(function (event) {
         var searchClicked = event.target.innerHTML
@@ -271,7 +276,7 @@ $('button').click(function (event) {
   })
       })
 }
-})
+  }
 
 //searches the Recently Changed Information; variable names are kept the same since they do mean the same thing as in the "runSearch" function
 function getInfoAgain (data) {
@@ -302,3 +307,5 @@ urlInfo.push(dataCityName)
 
   get5DayForecast(urlInfo); //loops this information into the previous 5dayforecast function to get the next 5 days
 }
+
+getStored();

@@ -50,3 +50,14 @@
         color:white;
     
 }
+
+button {
+    background-color: darkolivegreen;
+    cursor: pointer;
+    color:white;
+    margin-top: 5px;
+}
+
+button:hover {
+    background-color: olivedrab
+}
