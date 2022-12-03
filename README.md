@@ -8,6 +8,10 @@ This app was made in order to see weather in multiple areas, which can also be r
 
 From creating this app, I learned how to call information using an API, and creating multiple functions and calling variable within functions.
 
+Link to Repository: [https://github.com/godwingi/forecast-app]
+
+Link to Deployed Site: [https://godwingi.github.io/forecast-app/]
+
 ## Installation
 
 N/A
