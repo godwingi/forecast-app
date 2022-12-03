@@ -51,6 +51,7 @@ var day5humidityEl = document.getElementById("humidity1")
   // Local Storage Variable
   var cityArray = [];
 
+// Inital API call from the city search bar. Click event located on line 239
 function runSearch (data) {
     var cityName = city.value
   
@@ -62,38 +63,37 @@ function runSearch (data) {
   })
   .then(function (data) {
     // console.log(data)
+  
+  //creates variables for each piece of information on the current date
     var mainDateinUnix = data.dt
     var mainDate = dayjs.unix(mainDateinUnix).format('MMM D, YYYY');
+    var mainIcon = data.weather[0].icon
+    var mainTemp = data.main.temp
+    var mainHumidity = data.main.humidity
+    var findLongitude = data.coord.lon
+    var findLatitude = data.coord.lat
+    var dataCityName = data.name
+    var mainWind = data.wind.speed
 
-
-  var mainIcon = data.weather[0].icon
-  var mainTemp = data.main.temp
-  var mainHumidity = data.main.humidity
-  var findLongitude = data.coord.lon
-  var findLatitude = data.coord.lat
-  var dataCityName = data.name
-  var mainWind = data.wind.speed
-
+  // inserts current day weather into placeholders
 mainDateEl.textContent = mainDate
 mainIconImg.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
 mainTempEl.textContent = 'Temp: ' + mainTemp + ' °F'
 mainWindEl.textContent = 'Wind: ' + mainWind + ' MPH'
 mainHumidityEl.textContent = 'Humidity: ' + mainHumidity + ' %'
 
+// pushes data to have city name, longitude and latitiude to call the 5 day forecast in next API line
   var urlInfo = []; 
   urlInfo.push(findLongitude)
   urlInfo.push(findLatitude)
   urlInfo.push(dataCityName)
-  // console.log(urlInfo)
 
     get5DayForecast(urlInfo);
-    // searchHistoryButton (urlInfo)
-
 }  
   )}
 
 
-
+// API call to get the 5 day forecast
   function get5DayForecast (urlInfo) {
     var requestForecastUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + urlInfo[1]+"&lon=" + urlInfo[0] + "&appid=" + APIKey
 
@@ -102,12 +102,11 @@ mainHumidityEl.textContent = 'Humidity: ' + mainHumidity + ' %'
     return response.json();
   })
   .then(function (data) {
-    // console.log(data)
-
     getday1to5Arrays(data)
   })
   }
 
+  // gets all information on the 5 day forecast and puts them all into arrays
   function getday1to5Arrays (data) {
     // Day 1
     var day1Date = data.list[1].dt
@@ -192,7 +191,7 @@ mainHumidityEl.textContent = 'Humidity: ' + mainHumidity + ' %'
 
   }
   
-  // Functions to insert all information into their respective placeholders
+  // Functions to insert all 5-day forecast information into their respective placeholders
   function loadDay5 (day5Info) {
     day5dateEl.textContent = day5Info[0]
     day5iconEl.src = 'http://openweathermap.org/img/wn/' + day5Info[1] + '@2x.png'
@@ -233,28 +232,30 @@ mainHumidityEl.textContent = 'Humidity: ' + mainHumidity + ' %'
     day1humidityEl.textContent = 'Humidity:' + day1Info[4] + '%'
   }
 
+  //gets the information inputted into the search field
 $('button').click(function (event) {
     event.preventDefault()
     var cityName = city.value
-    cityNameEl.textContent = cityName
-    ulEl.textContent = ""
-    var cityButtons = JSON.parse(localStorage.getItem("cities"))
+    cityNameEl.textContent = cityName //updates intital city placeholder
+    
+    ulEl.textContent = "" //clears recently searched inputs
+    var cityButtons = JSON.parse(localStorage.getItem("cities")) //finds items in the Local Storage and populates it, at the moment, only when the "search" button is clicked
     
     if(cityButtons !== null){
         cityArray = cityButtons  
       } 
   
-    cityArray.push(cityName)
+    cityArray.push(cityName) // pushes cities into array so that they can be stringed into the Local Storage
     localStorage.setItem('cities', JSON.stringify(cityArray))
     
- // creates the buttons form localStorage - 
+ // creates the buttons from localStorage 
     for (let i=0; i < cityArray.length; i++) {
       let searchButton = document.createElement("button")
       searchButton.textContent = cityArray[i]
       ulEl.append(searchButton) 
   
       runSearch();
-
+// When button is clicked, it's innerHTML is created into a variable making it possible to make a call using the city name to the API
       $(searchButton).click(function (event) {
         var searchClicked = event.target.innerHTML
         cityNameEl.textContent = searchClicked
@@ -266,20 +267,18 @@ $('button').click(function (event) {
     return response.json();
   })
   .then(function (data){ 
-    console.log(data)
-    getInfoAgain(data);
+    getInfoAgain(data); //instead of going back to "runSearch" function, new function is created to avoid possible clashes
   })
       })
 }
 })
 
-//searches the Recently Changed Information
+//searches the Recently Changed Information; variable names are kept the same since they do mean the same thing as in the "runSearch" function
 function getInfoAgain (data) {
-
+  
+  //creates variables for each piece of information on the current date
   var mainDateinUnix = data.dt
   var mainDate = dayjs.unix(mainDateinUnix).format('MMM D, YYYY');
-
-
   var mainIcon = data.weather[0].icon
   var mainTemp = data.main.temp
   var mainHumidity = data.main.humidity
@@ -288,17 +287,18 @@ function getInfoAgain (data) {
   var dataCityName = data.name
   var mainWind = data.wind.speed
 
+  // inserts current day weather into placeholders
 mainDateEl.textContent = mainDate
 mainIconImg.src = 'http://openweathermap.org/img/wn/' + mainIcon + '@2x.png'
 mainTempEl.textContent = 'Temp: ' + mainTemp + ' °F'
 mainWindEl.textContent = 'Wind: ' + mainWind + ' MPH'
 mainHumidityEl.textContent = 'Humidity: ' + mainHumidity + ' %'
 
+// pushes data to have city name, longitude and latitiude to call the 5 day forecast in next API line
 var urlInfo = []; 
 urlInfo.push(findLongitude)
 urlInfo.push(findLatitude)
 urlInfo.push(dataCityName)
-// console.log(urlInfo)
 
-  get5DayForecast(urlInfo);
+  get5DayForecast(urlInfo); //loops this information into the previous 5dayforecast function to get the next 5 days
 }
