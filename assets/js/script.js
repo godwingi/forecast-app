@@ -51,7 +51,7 @@ var day5humidityEl = document.getElementById("humidity1")
   // Local Storage Variable
   var cityArray = [];
 
-// Inital API call from the city search bar. Click event located on line 239
+// Inital API call from the city search bar. Click event located on line 235
 function runSearch (data) {
     var cityName = city.value
   
@@ -239,11 +239,11 @@ $('button').click(function (event) {
     cityNameEl.textContent = cityName //updates intital city placeholder
     
     runSearch()
-    getStored(cityName)
+    setItems(cityName)
   })
 
-// separate function to check local Storage for information to populate recently searched
-  function getStored(cityName) {
+// separate function to check local Storage for information to populate recently searched, and set items into an array
+  function setItems(cityName) {
     ulEl.textContent = "" //clears recently searched inputs
     var cityButtons = JSON.parse(localStorage.getItem("cities")) //finds items in the Local Storage and populates it, at the moment, only when the "search" button is clicked
     
@@ -253,18 +253,33 @@ $('button').click(function (event) {
   
     cityArray.push(cityName) // pushes cities into array so that they can be stringed into the Local Storage
     localStorage.setItem('cities', JSON.stringify(cityArray))
-    
+
+    createButtons()
+  }
+
+  // function to create buttons from localStorage using a for loop
+  function createButtons() {
  // creates the buttons from localStorage 
     for (let i=0; i < cityArray.length; i++) {
       let searchButton = document.createElement("button")
       searchButton.textContent = cityArray[i]
+      
+      if (cityArray !== null) {
       ulEl.append(searchButton) 
-  
+      }
+
+      reSearch(searchButton)
+    }
+  }
+
+// when a button is clicked, a new call is made to the API to get the weather information
+  function reSearch(searchButton) {
 // When button is clicked, it's innerHTML is created into a variable making it possible to make a call using the city name to the API
       $(searchButton).click(function (event) {
         var searchClicked = event.target.innerHTML
         cityNameEl.textContent = searchClicked
           console.log(searchClicked)
+    
         var queryURL2 = "http://api.openweathermap.org/data/2.5/weather?q=" + searchClicked + "&appid=" + APIKey;
 
     fetch (queryURL2)
@@ -276,7 +291,7 @@ $('button').click(function (event) {
   })
       })
 }
-  }
+  
 
 //searches the Recently Changed Information; variable names are kept the same since they do mean the same thing as in the "runSearch" function
 function getInfoAgain (data) {
@@ -308,4 +323,4 @@ urlInfo.push(dataCityName)
   get5DayForecast(urlInfo); //loops this information into the previous 5dayforecast function to get the next 5 days
 }
 
-getStored();
+setItems();
