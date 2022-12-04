@@ -264,13 +264,14 @@ $('button').click(function (event) {
       let searchButton = document.createElement("button")
       searchButton.textContent = cityArray[i]
       
-      if (cityArray !== null) {
-      ulEl.append(searchButton) 
+      if (cityArray[i]== null) {
+        console.log("null")
+      } else {
+        ulEl.append(searchButton) 
       }
-
       reSearch(searchButton)
-    }
-  }
+    }}
+
 
 // when a button is clicked, a new call is made to the API to get the weather information
   function reSearch(searchButton) {
